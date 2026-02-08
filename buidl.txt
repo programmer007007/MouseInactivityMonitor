@@ -1,0 +1,22 @@
+C:\Users\Andrew\Desktop>taskkill /F /IM MouseInactivityMonitor.exe
+SUCCESS: The process "MouseInactivityMonitor.exe" with PID 6912 has been terminated.
+
+C:\Users\Andrew\Desktop>cd MouseInactivityMonitor\
+
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>dotnet clean
+
+Build succeeded in 0.6s
+
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true
+Restore complete (0.5s)
+  MouseInactivityMonitor succeeded (2.8s) → bin\Release\net8.0-windows\win-x64\publish\
+
+Build succeeded in 3.6s
+
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>copy /Y "C:\Users\Andrew\Desktop\MouseInactivityMonitor\bin\Release\net8.0-windows\win-x64\publish\MouseInactivityMonitor.exe" "C:\MouseWatcher\MouseInactivityMonitor.exe"
+        1 file(s) copied.
+
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>schtasks /run /tn "MouseMonitor"
+SUCCESS: Attempted to run the scheduled task "MouseMonitor".
+
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>
