@@ -73,5 +73,4 @@ $RECYCLE.BIN/
 # Temporary files
 *.tmp
 *.temp
-build.text
 .history/*

@@ -13,7 +13,7 @@ Restore complete (0.5s)
 
 Build succeeded in 3.6s
 
-C:\Users\Andrew\Desktop\MouseInactivityMonitor>copy /Y "C:\Users\Andrew\Desktop\MouseInactivityMonitor\bin\Release\net8.0-windows\win-x64\publish\MouseInactivityMonitor.exe" "C:\MouseWatcher\MouseInactivityMonitor.exe"
+C:\Users\Andrew\Desktop\MouseInactivityMonitor>copy /Y "K:\PersonalSideProject\MouseInactivityMonitor\bin\Release\net8.0-windows\win-x64\publish\MouseInactivityMonitor.exe" "C:\MouseWatcher\MouseInactivityMonitor.exe"
         1 file(s) copied.
 
 C:\Users\Andrew\Desktop\MouseInactivityMonitor>schtasks /run /tn "MouseMonitor"
