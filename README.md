@@ -11,7 +11,8 @@ This application runs as a Windows service (or console application for debugging
 - **Dual-Mode Operation**: Can run as a Windows service or console application
 - **Activity Monitoring**: Tracks both mouse movement and keyboard input
 - **Configurable Timeout**: Default 300 seconds (5 minutes) of inactivity
-- **ESP32 Integration**: Sends HTTP trigger to ESP32 device for IR signal transmission
+- **ESP32 Integration**: Sends HTTP requests to control fan power state
+- **Tray Control**: Optional system tray icon showing fan ON/OFF with quick controls
 - **Comprehensive Logging**: Logs all activities to a file with fallback to Windows Event Log
 - **Error Handling**: Robust exception handling and recovery
 
@@ -22,6 +23,9 @@ Default settings (modify in `MouseInactivityMonitor.cs`):
 ```csharp
 ESP32_IP = "192.168.0.117"              // IP address of your ESP32 device
 INACTIVITY_TIMEOUT_SECONDS = 300        // Timeout in seconds (5 minutes)
+FAN_INITIAL_STATE_IS_ON = false         // Initial state for fan (internal state)
+SEND_INITIAL_STATE_TO_DEVICE = false    // If true, sends a trigger on startup
+TRIGGER_ENDPOINT = "/trigger"           // Toggle endpoint
 LOG_FILE = "%ProgramData%/MouseMonitor/MouseMonitor.log"
 ```
 
@@ -55,6 +59,19 @@ bin\Release\net8.0-windows\win-x64\publish\MouseInactivityMonitor.exe
 MouseInactivityMonitor.exe --console
 ```
 
+### Tray Mode (no console window)
+Use this if you want only the system tray icon and no console window:
+```bash
+MouseInactivityMonitor.exe --tray
+```
+
+### Console Mode with Tray (default)
+When running in console mode, the tray icon is enabled by default.
+To disable it:
+```bash
+MouseInactivityMonitor.exe --console --no-tray
+```
+
 ### As Windows Service
 1. Copy the executable to a permanent location (e.g., `C:\MouseWatcher\`)
 2. Install as a Windows service using `sc create` or Task Scheduler
@@ -73,7 +90,7 @@ schtasks /run /tn "MouseMonitor"
    - Keyboard input using Windows API (`GetLastInputInfo`)
 3. **Activity Detection**: Any mouse or keyboard activity resets the inactivity timer
 4. **Trigger Condition**: After the configured timeout period with no activity:
-   - Sends HTTP GET request to `http://{ESP32_IP}/trigger?source=MouseMonitor`
+   - Sends HTTP GET request to `http://{ESP32_IP}/fan/off?source=Inactivity`
    - Logs the event
    - Prevents duplicate triggers until activity resumes
 
@@ -86,11 +103,11 @@ Logs are stored at:
 
 Typical path: `C:\ProgramData\MouseMonitor\MouseMonitor.log`
 
-## API Endpoint
+## API Endpoints
 
 The ESP32 device should expose an HTTP endpoint:
 ```
-GET http://{ESP32_IP}/trigger?source=MouseMonitor
+GET http://{ESP32_IP}/trigger?source=Tray
 ```
 
 ## Dependencies
